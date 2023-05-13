@@ -105,3 +105,23 @@ plt.ylabel("Cost of vegetables [CoHD_v]")
 plt.title("6 clusters")
 plt.show()
 
+# fitting code
+x = df17_cleaned['Affordability of a nutrient adequate diet: ratio of cost to the food poverty line [CoNA_pov]']
+y = df17_cleaned['Affordability of a healthy diet: ratio of cost to the food poverty line [CoHD_pov]']
+
+# curve fit
+popt, pcorr = opt.curve_fit(line, x, y)
+
+# extract variances and sigma
+sigmas = np.sqrt(np.diag(pcorr))
+
+z = line(x, *popt)
+
+# display the fit
+plt.figure()
+plt.title("Linear")
+plt.scatter(x, y, label="data")
+plt.plot(x, z, label="fit")
+
+plt.legend(loc="upper left")
+plt.show()

@@ -93,7 +93,8 @@ cen = kmeans.cluster_centers_
 # display the plot
 plt.figure(figsize=(6.0, 6.0))
 scatter = plt.scatter(df_clus["Cost of fruits [CoHD_f]"],
-            df_clus["Cost of vegetables [CoHD_v]"], c=labels, cmap="tab10")
+                      df_clus["Cost of vegetables [CoHD_v]"], c=labels,
+                      cmap="tab10")
 
 # show cluster centres
 xc = cen[:, 0]
@@ -102,7 +103,7 @@ plt.scatter(xc, yc, c="red", marker="d", s=80, label="Cluster centers")
 
 # add legend for clusters
 legend1 = plt.legend(*scatter.legend_elements(),
-                    loc="lower right", title="Clusters")
+                     loc="lower right", title="Clusters")
 plt.gca().add_artist(legend1)
 
 #label and title

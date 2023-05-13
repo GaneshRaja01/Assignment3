@@ -40,6 +40,7 @@ def line(x, m, c):
     y = (m * x) + c
     return y
 
+
 # main code
 df = pd.read_excel('Food_Prices_for_Nutrition.xlsx')
 
@@ -91,19 +92,25 @@ cen = kmeans.cluster_centers_
 
 # display the plot
 plt.figure(figsize=(6.0, 6.0))
-plt.scatter(df_clus["Cost of fruits [CoHD_f]"],
+scatter = plt.scatter(df_clus["Cost of fruits [CoHD_f]"],
             df_clus["Cost of vegetables [CoHD_v]"], c=labels, cmap="tab10")
 
 # show cluster centres
 xc = cen[:, 0]
 yc = cen[:, 1]
-plt.scatter(xc, yc, c="red", marker="d", s=80)
+plt.scatter(xc, yc, c="red", marker="d", s=80, label="Cluster centers")
+
+# add legend for clusters
+legend1 = plt.legend(*scatter.legend_elements(),
+                    loc="lower right", title="Clusters")
+plt.gca().add_artist(legend1)
 
 #label and title
 plt.xlabel("Cost of fruits [CoHD_f]")
 plt.ylabel("Cost of vegetables [CoHD_v]")
-plt.title("6 clusters")
+plt.title("clusters")
 plt.show()
+
 
 # fitting code
 x = df17_cleaned['Affordability of a nutrient adequate diet: ratio of cost to the food poverty line [CoNA_pov]']
@@ -119,9 +126,10 @@ z = line(x, *popt)
 
 # display the fit
 plt.figure()
+plt.xlabel('Affordability of a nutrient adequate diet [CoNA_pov]')
+plt.ylabel('Affordability of a healthy diet [CoHD_pov]')
 plt.title("Linear")
 plt.scatter(x, y, label="data")
 plt.plot(x, z, label="fit")
-
 plt.legend(loc="upper left")
 plt.show()

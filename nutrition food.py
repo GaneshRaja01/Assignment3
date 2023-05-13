@@ -40,4 +40,23 @@ def line(x, m, c):
     y = (m * x) + c
     return y
 
+# main code
+df = pd.read_excel('Food_Prices_for_Nutrition.xlsx')
+
+# year for which clustering and fitting to be done
+Time = 2017
+class_name = 'Food Prices for Nutrition 1.1'
+
+df2017 = clean_df(df, Time, class_name)
+
+# columns to be removed
+cols = ['Classification Name', 'Classification Code', 'Country Code',
+        'Time', 'Time Code']
+df17_cleaned = remove_cols(df2017, cols)
+
+# replace .. with zeroes
+df17_cleaned.replace('..', 0.0, inplace=True)
+
+# set 'Country Name' as index and transpose the dataframe
+df_t = df17_cleaned.set_index('Country Name').T
 

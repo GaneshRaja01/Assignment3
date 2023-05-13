@@ -60,3 +60,48 @@ df17_cleaned.replace('..', 0.0, inplace=True)
 # set 'Country Name' as index and transpose the dataframe
 df_t = df17_cleaned.set_index('Country Name').T
 
+# Cluster start here
+df_clus = df17_cleaned[["Cost of fruits [CoHD_f]",
+                        "Cost of vegetables [CoHD_v]"]].copy()
+
+# normalise dataframe and inspect result using cluster tools
+df_clus, df_min, df_max = ct.scaler(df_clus)
+print(df_clus.describe())
+
+print("n   score using silhouette score")
+# loop over trial numbers of clusters calculating the silhouette
+for ic in range(2, 10):
+    # set up kmeans and fit
+    kmeans = cluster.KMeans(n_clusters=ic)
+    kmeans.fit(df_clus)
+
+    # extract labels and calculate silhoutte score
+    labels = kmeans.labels_
+    print(ic, skmet.silhouette_score(df_clus, labels))
+
+# display the clusters in the plot
+nc = 6  # number of cluster centres
+
+kmeans = cluster.KMeans(n_clusters=nc)
+kmeans.fit(df_clus)
+
+# extract labels and cluster centres
+labels = kmeans.labels_
+cen = kmeans.cluster_centers_
+
+# display the plot
+plt.figure(figsize=(6.0, 6.0))
+plt.scatter(df_clus["Cost of fruits [CoHD_f]"],
+            df_clus["Cost of vegetables [CoHD_v]"], c=labels, cmap="tab10")
+
+# show cluster centres
+xc = cen[:, 0]
+yc = cen[:, 1]
+plt.scatter(xc, yc, c="red", marker="d", s=80)
+
+#label and title
+plt.xlabel("Cost of fruits [CoHD_f]")
+plt.ylabel("Cost of vegetables [CoHD_v]")
+plt.title("6 clusters")
+plt.show()
+
